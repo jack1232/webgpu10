@@ -5,5 +5,5 @@ This is the source code for the 9th part of a series YouTube videos on step-by-s
 
 This sample WebGPU app creates a square using index buffer. The output from the app is shown in the following image.
 
-![image01](dist/assets/image01.png)
+![image02](dist/assets/image02.png)
 
