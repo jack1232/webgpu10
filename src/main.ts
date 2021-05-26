@@ -52,6 +52,7 @@ const Create3DObject = async () => {
         },
         primitive:{
             topology: "triangle-list",
+            cullMode: 'back'
         },
         depthStencil:{
             format: "depth24plus",
@@ -75,14 +76,16 @@ const Create3DObject = async () => {
 
     const uniformBindGroup = device.createBindGroup({
         layout: pipeline.getBindGroupLayout(0),
-        entries: [{
-            binding: 0,
-            resource: {
-                buffer: uniformBuffer,
-                offset: 0,
-                size: 64
+        entries: [
+            {
+                binding: 0,
+                resource: {
+                    buffer: uniformBuffer,
+                    offset: 0,
+                    size: 64
+                }
             }
-        }]
+        ]
     });
 
     const textureView = gpu.swapChain.getCurrentTexture().createView();
@@ -109,10 +112,9 @@ const Create3DObject = async () => {
     CreateTransforms(modelMatrix);
     mat4.multiply(mvpMatrix, vpMatrix, modelMatrix);
     device.queue.writeBuffer(uniformBuffer, 0, mvpMatrix as ArrayBuffer);
-    renderPassDescription.colorAttachments[0].view = textureView;
+
     const commandEncoder = device.createCommandEncoder();
     const renderPass = commandEncoder.beginRenderPass(renderPassDescription as GPURenderPassDescriptor);
-
     renderPass.setPipeline(pipeline);
     renderPass.setVertexBuffer(0, vertexBuffer);
     renderPass.setVertexBuffer(1, colorBuffer);
@@ -124,7 +126,3 @@ const Create3DObject = async () => {
 }
 
 Create3DObject();
-
-
-
-
