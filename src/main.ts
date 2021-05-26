@@ -68,7 +68,7 @@ const Create3DObject = async () => {
     const vp = CreateViewProjection(gpu.canvas.width/gpu.canvas.height);
     vpMatrix = vp.viewProjectionMatrix;
 
-    // create uniform buffer and layout
+    // create uniform buffer and bind group
     const uniformBuffer = device.createBuffer({
         size: 64,
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
