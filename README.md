@@ -7,3 +7,6 @@ This sample WebGPU app creates a square using index buffer. The output from the 
 
 ![image02](dist/assets/image02.png)
 
+## Link for All Source Code Used in the WebGPU Step-By-Step Video Series:
+
+https://github.com/jack1232/WebGPU-Step-By-Step
