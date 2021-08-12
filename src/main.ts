@@ -46,7 +46,7 @@ const Create3DObject = async () => {
             entryPoint: "main",
             targets: [
                 {
-                    format: gpu.swapChainFormat as GPUTextureFormat
+                    format: gpu.format as GPUTextureFormat
                 }
             ]
         },
@@ -88,7 +88,7 @@ const Create3DObject = async () => {
         ]
     });
 
-    const textureView = gpu.swapChain.getCurrentTexture().createView();
+    const textureView = gpu.context.getCurrentTexture().createView();
     const depthTexture = device.createTexture({
         size: [gpu.canvas.width, gpu.canvas.height, 1],
         format: "depth24plus",
