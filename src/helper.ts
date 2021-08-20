@@ -81,7 +81,7 @@ export const InitGPU = async () => {
     const canvas = document.getElementById('canvas-webgpu') as HTMLCanvasElement;
     const adapter = await navigator.gpu?.requestAdapter();
     const device = await adapter?.requestDevice() as GPUDevice;
-    const context = canvas.getContext('gpupresent') as GPUPresentationContext;
+    const context = canvas.getContext('webgpu') as GPUCanvasContext;
     const format = 'bgra8unorm';
     context.configure({
         device: device,
