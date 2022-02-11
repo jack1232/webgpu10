@@ -1,5 +1,5 @@
 import { InitGPU, CreateGPUBuffer, CreateTransforms, CreateViewProjection } from './helper';
-import { Shaders } from './shaders';
+import shader from './shader.wgsl';
 import { CubeData } from './vertex_data';
 import { mat4 } from 'gl-matrix';
 
@@ -13,13 +13,12 @@ const Create3DObject = async () => {
     const vertexBuffer = CreateGPUBuffer(device, cubeData.positions);
     const colorBuffer = CreateGPUBuffer(device, cubeData.colors);
  
-    const shader = Shaders();
     const pipeline = device.createRenderPipeline({
         vertex: {
             module: device.createShaderModule({                    
-                code: shader.vertex
+                code: shader
             }),
-            entryPoint: "main",
+            entryPoint: "vs_main",
             buffers:[
                 {
                     arrayStride: 12,
@@ -41,9 +40,9 @@ const Create3DObject = async () => {
         },
         fragment: {
             module: device.createShaderModule({                    
-                code: shader.fragment
+                code: shader
             }),
-            entryPoint: "main",
+            entryPoint: "fs_main",
             targets: [
                 {
                     format: gpu.format as GPUTextureFormat
@@ -97,14 +96,20 @@ const Create3DObject = async () => {
     const renderPassDescription = {
         colorAttachments: [{
             view: textureView,
+            clearValue: { r: 0.5, g: 0.5, b: 0.8, a: 1.0 }, //background color
             loadValue: { r: 0.5, g: 0.5, b: 0.8, a: 1.0 }, //background color
+            loadOp: 'clear',
             storeOp: 'store'
         }],
         depthStencilAttachment: {
             view: depthTexture.createView(),
             depthLoadValue: 1.0,
+            depthClearValue: 1.0,
+            depthLoadOp: 'clear',
             depthStoreOp: "store",
+            stencilClearValue: 0,
             stencilLoadValue: 0,
+            stencilLoadOp: 'clear',
             stencilStoreOp: "store"
         }
     };
@@ -120,7 +125,7 @@ const Create3DObject = async () => {
     renderPass.setVertexBuffer(1, colorBuffer);
     renderPass.setBindGroup(0, uniformBindGroup);
     renderPass.draw(numberOfVertices);
-    renderPass.endPass();
+    renderPass.end();
 
     device.queue.submit([commandEncoder.finish()]);
 }
