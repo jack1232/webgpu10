@@ -82,10 +82,18 @@ export const InitGPU = async () => {
     const adapter = await navigator.gpu?.requestAdapter();
     const device = await adapter?.requestDevice() as GPUDevice;
     const context = canvas.getContext('webgpu') as GPUCanvasContext;
-    const format = 'bgra8unorm';
+
+    const devicePixelRatio = window.devicePixelRatio || 1;
+    const size = [
+        canvas.clientWidth * devicePixelRatio,
+        canvas.clientHeight * devicePixelRatio,
+    ];
+    const format = context.getPreferredFormat(adapter!);
+
     context.configure({
         device: device,
-        format: format
+        format: format,
+        size: size
     });
     return{ device, canvas, format, context };
 };
@@ -110,14 +118,26 @@ export const InitGPU = async () => {
 
 export const CheckWebGPU = () => {
     let result = 'Great, your current browser supports WebGPU!';
-        if (!navigator.gpu) {
-           result = `Your current browser does not support WebGPU! Make sure you are on a system 
-                     with WebGPU enabled. Currently, SPIR-WebGPU is only supported in  
-                     <a href="https://www.google.com/chrome/canary/">Chrome canary</a>
-                     with the flag "enable-unsafe-webgpu" enabled. See the 
-                     <a href="https://github.com/gpuweb/gpuweb/wiki/Implementation-Status"> 
-                     Implementation Status</a> page for more details.                   
-                    `;
-        } 
+    if (!navigator.gpu) {
+        result = `Your current browser does not support WebGPU! Make sure you are on a system 
+                    with WebGPU enabled. Currently, SPIR-WebGPU is only supported in  
+                    <a href="https://www.google.com/chrome/canary/">Chrome canary</a>
+                    with the flag "enable-unsafe-webgpu" enabled. See the 
+                    <a href="https://github.com/gpuweb/gpuweb/wiki/Implementation-Status"> 
+                    Implementation Status</a> page for more details.                   
+                `;
+    } 
+
+    const canvas = document.getElementById('canvas-webgpu') as HTMLCanvasElement;
+    const div = document.getElementsByClassName('item2')[0] as HTMLDivElement;
+    canvas.width  = div.offsetWidth;
+    canvas.height = div.offsetHeight;
+
+    function windowResize() {
+        canvas.width  = div.offsetWidth;
+        canvas.height = div.offsetHeight;
+    };
+    window.addEventListener('resize', windowResize);
+
     return result;
 };

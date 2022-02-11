@@ -1,5 +1,6 @@
 import { InitGPU, CreateGPUBuffer, CreateTransforms, CreateViewProjection } from './helper';
 import shader from './shader.wgsl';
+import "./site.css";
 import { CubeData } from './vertex_data';
 import { mat4 } from 'gl-matrix';
 
@@ -96,8 +97,8 @@ const Create3DObject = async () => {
     const renderPassDescription = {
         colorAttachments: [{
             view: textureView,
-            clearValue: { r: 0.5, g: 0.5, b: 0.8, a: 1.0 }, //background color
-            loadValue: { r: 0.5, g: 0.5, b: 0.8, a: 1.0 }, //background color
+            clearValue: { r: 0.2, g: 0.247, b: 0.314, a: 1.0  }, //background color
+            loadValue: { r: 0.2, g: 0.247, b: 0.314, a: 1.0  }, 
             loadOp: 'clear',
             storeOp: 'store'
         }],
@@ -131,3 +132,7 @@ const Create3DObject = async () => {
 }
 
 Create3DObject();
+
+window.addEventListener('resize', function(){
+    Create3DObject();
+});
