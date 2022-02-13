@@ -131,15 +131,19 @@ export const CheckWebGPU = () => {
     } 
 
     const canvas = document.getElementById('canvas-webgpu') as HTMLCanvasElement;
-    const div = document.getElementsByClassName('item2')[0] as HTMLDivElement;
-    canvas.width  = div.offsetWidth;
-    canvas.height = div.offsetHeight;
+    if(canvas){
+        const div = document.getElementsByClassName('item2')[0] as HTMLDivElement;
+        if(div){
+            canvas.width  = div.offsetWidth;
+            canvas.height = div.offsetHeight;
 
-    function windowResize() {
-        canvas.width  = div.offsetWidth;
-        canvas.height = div.offsetHeight;
-    };
-    window.addEventListener('resize', windowResize);
+            function windowResize() {
+                canvas.width  = div.offsetWidth;
+                canvas.height = div.offsetHeight;
+            };
+            window.addEventListener('resize', windowResize);
+        }
+    }
 
     return result;
 };
