@@ -15,6 +15,7 @@ const Create3DObject = async () => {
     const colorBuffer = CreateGPUBuffer(device, cubeData.colors);
  
     const pipeline = device.createRenderPipeline({
+        layout:'auto',
         vertex: {
             module: device.createShaderModule({                    
                 code: shader
@@ -98,7 +99,7 @@ const Create3DObject = async () => {
         colorAttachments: [{
             view: textureView,
             clearValue: { r: 0.2, g: 0.247, b: 0.314, a: 1.0  }, //background color
-            loadValue: { r: 0.2, g: 0.247, b: 0.314, a: 1.0  }, 
+            //loadValue: { r: 0.2, g: 0.247, b: 0.314, a: 1.0  }, 
             loadOp: 'clear',
             storeOp: 'store'
         }],
@@ -108,10 +109,10 @@ const Create3DObject = async () => {
             depthClearValue: 1.0,
             depthLoadOp: 'clear',
             depthStoreOp: "store",
-            stencilClearValue: 0,
+            /*stencilClearValue: 0,
             stencilLoadValue: 0,
             stencilLoadOp: 'clear',
-            stencilStoreOp: "store"
+            stencilStoreOp: "store"*/
         }
     };
     
